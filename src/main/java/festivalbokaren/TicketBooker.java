@@ -1,25 +1,35 @@
 package festivalbokaren;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import festivalbokaren.TicketType;
+import festivalbokaren.Ticket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class TicketBooker {
     private List<Ticket> bookings;
-    private int vipTicketCount = 1044;
-    private int standardTicketCount = 3449;
-    private int standardPlusTicketCount = 1884;
-    private int officialTicketCount = 100;
+    private Map<TicketType, Integer> ticketCounts;
 
     public TicketBooker() {
         this.bookings = new ArrayList<>();
+        this.ticketCounts = new HashMap<>();
+        initializeTicketCounts();
+    }
+
+    private void initializeTicketCounts() {
+        ticketCounts.put(TicketType.VIP, 1044);
+        ticketCounts.put(TicketType.STANDARD, 3449);
+        ticketCounts.put(TicketType.STANDARD_PLUS, 1884);
+        ticketCounts.put(TicketType.OFFICIAL, 100);
     }
 
     public static void main(String[] args) {
@@ -72,17 +82,17 @@ public class TicketBooker {
 
     private void bookTicket() {
         Scanner scanner = new Scanner(System.in);
-
+    
         System.out.print("Enter first name: ");
         String firstName = scanner.nextLine();
-
+    
         System.out.print("Enter last name: ");
         String lastName = scanner.nextLine();
-
+    
         System.out.print("Enter year of birth: ");
         int yearOfBirth = scanner.nextInt();
         scanner.nextLine(); // Consume newline character
-
+    
         System.out.println("Ticket types:");
         System.out.println("1. VIP");
         System.out.println("2. STANDARD");
@@ -91,62 +101,38 @@ public class TicketBooker {
         System.out.print("Enter ticket type: ");
         int ticketTypeChoice = scanner.nextInt();
         scanner.nextLine(); // Consume newline character
-
+    
         TicketType ticketType;
+    
         switch (ticketTypeChoice) {
             case 1:
                 ticketType = TicketType.VIP;
-                if (vipTicketCount > 0) {
-                    vipTicketCount--;
-                    System.out.println("VIP ticket booked successfully!");
-                } else {
-                    System.out.println("No more VIP tickets available.");
-                    return;
-                }
                 break;
             case 2:
                 ticketType = TicketType.STANDARD;
-                if (standardTicketCount > 0) {
-                    standardTicketCount--;
-                    System.out.println("Standard ticket booked successfully!");
-                } else {
-                    System.out.println("No more Standard tickets available.");
-                    return;
-                }
                 break;
             case 3:
                 ticketType = TicketType.STANDARD_PLUS;
-                if (standardPlusTicketCount > 0) {
-                    standardPlusTicketCount--;
-                    System.out.println("Standard Plus ticket booked successfully!");
-                } else {
-                    System.out.println("No more Standard Plus tickets available.");
-                    return;
-                }
                 break;
             case 4:
                 ticketType = TicketType.OFFICIAL;
-                if (officialTicketCount > 0) {
-                    officialTicketCount--;
-                    System.out.println("Official ticket booked successfully!");
-                } else {
-                    System.out.println("No more Official tickets available.");
-                    return;
-                }
                 break;
             default:
                 System.out.println("Invalid ticket type. Booking failed.");
                 return;
         }
 
-        // Create a new Ticket object with the entered details
-        Ticket ticket = new Ticket(firstName, lastName, yearOfBirth, ticketType);
-
-        // TODO: Add code to process the booked ticket (e.g., store in a list, database, etc.)
-        bookings.add(ticket);
-
-        System.out.println("Ticket booked successfully!");
+        int availableTickets = ticketCounts.get(ticketType);
+        if (availableTickets > 0) {
+            ticketCounts.put(ticketType, availableTickets - 1);
+            Ticket booking = new Ticket(firstName, lastName, yearOfBirth, ticketType);
+            bookings.add(booking);
+            System.out.println("Ticket booked successfully!");
+        } else {
+            System.out.println("No more tickets of type " + ticketType + " available.");
+        }
     }
+    
 
     private void printSummary() {
         System.out.println("Loaded bookings:");
@@ -158,34 +144,12 @@ public class TicketBooker {
             }
         }
 
-        int vipTickets = 0;
-        int standardTickets = 0;
-        int standardPlusTickets = 0;
-        int officialTickets = 0;
-
-        for (Ticket ticket : bookings) {
-            TicketType ticketType = ticket.getTicketType();
-            switch (ticketType) {
-                case VIP:
-                    vipTickets++;
-                    break;
-                case STANDARD:
-                    standardTickets++;
-                    break;
-                case STANDARD_PLUS:
-                    standardPlusTickets++;
-                    break;
-                case OFFICIAL:
-                    officialTickets++;
-                    break;
-            }
-        }
-
         System.out.println("Summary of Booked Tickets:");
-        System.out.println("VIP: " + vipTickets + " pcs");
-        System.out.println("STANDARD: " + standardTickets + " pcs");
-        System.out.println("STANDARD_PLUS: " + standardPlusTickets + " pcs");
-        System.out.println("OFFICIAL: " + officialTickets + " pcs");
+        for (Map.Entry<TicketType, Integer> entry : ticketCounts.entrySet()) {
+            TicketType ticketType = entry.getKey();
+            int count = entry.getValue();
+            System.out.println(ticketType + ": " + count + " pcs");
+        }
     }
 
     private void loadBookings() {
