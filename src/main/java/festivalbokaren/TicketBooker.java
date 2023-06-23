@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+//comments here :
 public class TicketBooker {
     private List<Ticket> bookings;
     private Map<TicketType, Integer> ticketCounts;
@@ -79,7 +80,7 @@ public class TicketBooker {
         System.out.println("5. Exit");
         System.out.print("Enter your choice: ");
     }
-
+//comments here :
     private void bookTicket() {
         Scanner scanner = new Scanner(System.in);
     
@@ -103,7 +104,7 @@ public class TicketBooker {
         scanner.nextLine(); // Consume newline character
     
         TicketType ticketType;
-    
+   //comments here : 
         switch (ticketTypeChoice) {
             case 1:
                 ticketType = TicketType.VIP;
@@ -133,7 +134,7 @@ public class TicketBooker {
         }
     }
     
-
+//comments here :
     private void printSummary() {
         System.out.println("Loaded bookings:");
         if (bookings.isEmpty()) {
@@ -151,7 +152,7 @@ public class TicketBooker {
             System.out.println(ticketType + ": " + count + " pcs");
         }
     }
-
+//comments here :
     private void loadBookings() {
         try {
             Path filePath = Path.of("Festivalbokaren/bookings.json");
@@ -164,7 +165,7 @@ public class TicketBooker {
             System.out.println("Failed to load bookings: " + e.getMessage());
         }
     }
-
+//comments here:
     private void saveBookings() {
         try {
             Path filePath = Path.of("Festivalbokaren/bookings.json");
