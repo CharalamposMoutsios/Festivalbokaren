@@ -1,14 +1,44 @@
 package festivalbokaren;
-//import festivalbokaren.EventTicket;
-//import festivalbokaren.TicketType;
 
+import festivalbokaren.EventTicket;
+import festivalbokaren.TicketType;
+import festivalbokaren.InvalidYearOfBirthException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TicketTest {
+
     @Test
-    public void testGettersAndSetters() {
+    public void testSetYearOfBirth_validYear() {
+        EventTicket ticket = new EventTicket();
+
+        try {
+            ticket.setYearOfBirth(1990);
+            int yearOfBirth = ticket.getYearOfBirth();
+            Assertions.assertEquals(1990, yearOfBirth);
+        } catch (InvalidYearOfBirthException e) {
+            // Handle the exception if needed
+        }
+    }
+
+    @Test
+    public void testSetYearOfBirth_invalidYear() {
+        EventTicket ticket = new EventTicket();
+
+        try {
+            ticket.setYearOfBirth(1920);
+            // If the exception was not thrown, fail the test
+            Assertions.fail("InvalidYearOfBirthException was expected but not thrown.");
+        } catch (InvalidYearOfBirthException e) {
+            // Expected exception, test passed
+            String expectedMessage = "Year of birth must be between 1930 and 2023.";
+            Assertions.assertEquals(expectedMessage, e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGettersAndSetters() throws InvalidYearOfBirthException {
         // Create a ticket object
         EventTicket ticket = new EventTicket();
 
@@ -55,6 +85,6 @@ public class TicketTest {
         EventTicket ticket = new EventTicket();
 
         // Set an invalid year of birth
-        Assertions.assertThrows(IllegalArgumentException.class, () -> ticket.setYearOfBirth(2025));
+        Assertions.assertThrows(InvalidYearOfBirthException.class, () -> ticket.setYearOfBirth(2025));
     }
 }

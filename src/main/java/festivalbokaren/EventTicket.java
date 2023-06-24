@@ -43,9 +43,9 @@ public class EventTicket {
         return yearOfBirth;
     }
 
-    public void setYearOfBirth(int yearOfBirth) {
+    public void setYearOfBirth(int yearOfBirth) throws InvalidYearOfBirthException {
         if (yearOfBirth < 1930 || yearOfBirth > 2023) {
-            throw new IllegalArgumentException("Year of birth must be between 1930 and 2023.");
+            throw new InvalidYearOfBirthException("Year of birth must be between 1930 and 2023.");
         }
         this.yearOfBirth = yearOfBirth;
     }
