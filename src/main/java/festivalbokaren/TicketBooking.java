@@ -1,9 +1,7 @@
 package festivalbokaren;
 
-import festivalbokaren.TicketType;
-import festivalbokaren.Ticket;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,8 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
-//comments here :
 public class TicketBooking {
     private List<Ticket> bookings;
     private Map<TicketType, Integer> ticketCounts;
@@ -25,18 +23,14 @@ public class TicketBooking {
         this.ticketCounts = new HashMap<>();
         initializeTicketCounts();
     }
-    //adding the getter methods, you can use them in your test class (TicketBookerTestSuite) 
-    //to access the bookings and ticketCounts fields of the TicketBooking class.
 
-    //1
     public List<Ticket> getBookings() {
         return bookings;
     }
-    //2
+
     public Map<TicketType, Integer> getTicketCounts() {
         return ticketCounts;
     }
-    //3
 
     private void initializeTicketCounts() {
         ticketCounts.put(TicketType.VIP, 1044);
@@ -56,30 +50,37 @@ public class TicketBooking {
 
         while (isRunning) {
             displayMenu();
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline character
 
-            switch (choice) {
-                case 1:
-                    bookTicket();
-                    break;
-                case 2:
-                    printSummary();
-                    break;
-                case 3:
-                    loadBookings();
-                    break;
-                case 4:
-                    saveBookings();
-                    break;
-                case 5:
-                    isRunning = false;
-                    System.out.println("Exiting the program...");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+            if (scanner.hasNextInt()) {
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+
+                switch (choice) {
+                    case 1:
+                        bookTicket(scanner);
+                        break;
+                    case 2:
+                        printSummary();
+                        break;
+                    case 3:
+                        loadBookings();
+                        break;
+                    case 4:
+                        saveBookings();
+                        break;
+                    case 5:
+                        isRunning = false;
+                        System.out.println("Exiting the program...");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine(); // Consume invalid input
             }
         }
+
         scanner.close();
     }
 
@@ -92,32 +93,43 @@ public class TicketBooking {
         System.out.println("5. Exit");
         System.out.print("Enter your choice: ");
     }
-//comments here :
-     void bookTicket() {
-        Scanner scanner = new Scanner(System.in);
-    
+
+    private void bookTicket(Scanner scanner) {
         System.out.print("Enter first name: ");
         String firstName = scanner.nextLine();
-    
+
         System.out.print("Enter last name: ");
         String lastName = scanner.nextLine();
-    
+
         System.out.print("Enter year of birth: ");
-        int yearOfBirth = scanner.nextInt();
+        int yearOfBirth;
+        try {
+            yearOfBirth = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid year of birth. Booking failed.");
+            scanner.nextLine(); // Consume invalid input
+            return;
+        }
         scanner.nextLine(); // Consume newline character
-    
+
         System.out.println("Ticket types:");
         System.out.println("1. VIP");
         System.out.println("2. STANDARD");
         System.out.println("3. STANDARD_PLUS");
         System.out.println("4. OFFICIAL");
         System.out.print("Enter ticket type: ");
-        int ticketTypeChoice = scanner.nextInt();
+        int ticketTypeChoice;
+        try {
+            ticketTypeChoice = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid ticket type. Booking failed.");
+            scanner.nextLine(); // Consume invalid input
+            return;
+        }
         scanner.nextLine(); // Consume newline character
-        scanner.close();
-    
+
         TicketType ticketType;
-   //comments here : 
+
         switch (ticketTypeChoice) {
             case 1:
                 ticketType = TicketType.VIP;
@@ -146,8 +158,7 @@ public class TicketBooking {
             System.out.println("No more tickets of type " + ticketType + " available.");
         }
     }
-    
-//comments here :
+
     private void printSummary() {
         System.out.println("Loaded bookings:");
         if (bookings.isEmpty()) {
@@ -165,7 +176,7 @@ public class TicketBooking {
             System.out.println(ticketType + ": " + count + " pcs");
         }
     }
-//comments here :
+
     private void loadBookings() {
         try {
             Path filePath = Path.of("Festivalbokaren/bookings.json");
@@ -178,7 +189,7 @@ public class TicketBooking {
             System.out.println("Failed to load bookings: " + e.getMessage());
         }
     }
-//comments here:
+
     private void saveBookings() {
         try {
             Path filePath = Path.of("Festivalbokaren/bookings.json");
