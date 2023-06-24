@@ -94,7 +94,7 @@ public class TicketBooking {
         System.out.print("Enter your choice: ");
     }
 
-    private void bookTicket(Scanner scanner) {
+    void bookTicket(Scanner scanner) {
         System.out.print("Enter first name: ");
         String firstName = scanner.nextLine();
 
@@ -159,7 +159,7 @@ public class TicketBooking {
         }
     }
 
-    private void printSummary() {
+    void printSummary() {
         System.out.println("Loaded bookings:");
         if (bookings.isEmpty()) {
             System.out.println("No bookings found.");
@@ -177,20 +177,25 @@ public class TicketBooking {
         }
     }
 
-    private void loadBookings() {
+    void loadBookings() {
         try {
             Path filePath = Path.of("Festivalbokaren/bookings.json");
             String json = Files.readString(filePath);
-            Ticket[] loadedBookings = new ObjectMapper().readValue(json, Ticket[].class);
+    
+            ObjectMapper objectMapper = new ObjectMapper();
+            Ticket[] loadedBookings = objectMapper.readValue(json, Ticket[].class);
+            
             bookings.clear();
             bookings.addAll(Arrays.asList(loadedBookings));
+            
             System.out.println("Bookings loaded successfully!");
         } catch (IOException e) {
             System.out.println("Failed to load bookings: " + e.getMessage());
         }
     }
+    
 
-    private void saveBookings() {
+    void saveBookings() {
         try {
             Path filePath = Path.of("Festivalbokaren/bookings.json");
             String json = new ObjectMapper().writeValueAsString(bookings);
@@ -201,4 +206,7 @@ public class TicketBooking {
             System.out.println("Failed to save bookings: " + e.getMessage());
         }
     }
+
+	public void loadBookings(Path invalidFilePath) {
+	}
 }
