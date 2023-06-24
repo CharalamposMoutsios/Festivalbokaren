@@ -23,11 +23,10 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -42,8 +41,8 @@ public class TicketBookerTestSuite {
         TicketBooking ticketBooking = new TicketBooking();
 
         // Add some dummy bookings
-        ticketBooking.getBookings().add(new Ticket("John", "Doe", 1990, TicketType.STANDARD));
-        ticketBooking.getBookings().add(new Ticket("Jane", "Smith", 1985, TicketType.VIP));
+        ticketBooking.getBookings().add(new EventTicket("John", "Doe", 1990, TicketType.STANDARD));
+        ticketBooking.getBookings().add(new EventTicket("Jane", "Smith", 1985, TicketType.VIP));
 
         // Call the printSummary() method
         ticketBooking.printSummary();
@@ -60,10 +59,10 @@ public class TicketBookerTestSuite {
         TicketBooking ticketBooking = new TicketBooking();
 
         // Manually add some bookings to the list
-        Ticket[] bookings = {
-            new Ticket("John", "Doe", 1990, TicketType.VIP),
-            new Ticket("Jane", "Smith", 1985, TicketType.STANDARD),
-            new Ticket("Mike", "Johnson", 1995, TicketType.STANDARD_PLUS)
+        EventTicket[] bookings = {
+            new EventTicket("John", "Doe", 1990, TicketType.VIP),
+            new EventTicket("Jane", "Smith", 1985, TicketType.STANDARD),
+            new EventTicket("Mike", "Johnson", 1995, TicketType.STANDARD_PLUS)
         };
         ticketBooking.getBookings().addAll(Arrays.asList(bookings));
 
@@ -71,13 +70,13 @@ public class TicketBookerTestSuite {
         ticketBooking.loadBookings();
 
         // Get the loaded bookings from the list
-        List<Ticket> loadedBookings = ticketBooking.getBookings();
+        List<EventTicket> loadedBookings = ticketBooking.getBookings();
 
         // Assert that the loaded bookings are equal to the manually added bookings
         assertEquals(bookings.length, loadedBookings.size(), "Loaded bookings count is not correct");
         for (int i = 0; i < bookings.length; i++) {
-            Ticket expectedBooking = bookings[i];
-            Ticket loadedBooking = loadedBookings.get(i);
+            EventTicket expectedBooking = bookings[i];
+            EventTicket loadedBooking = loadedBookings.get(i);
             assertEquals(expectedBooking.getFirstName(), loadedBooking.getFirstName(), "First name is not correct");
             assertEquals(expectedBooking.getLastName(), loadedBooking.getLastName(), "Last name is not correct");
             assertEquals(expectedBooking.getYearOfBirth(), loadedBooking.getYearOfBirth(), "Year of birth is not correct");
@@ -91,10 +90,10 @@ public void testSaveBookings() {
     TicketBooking ticketBooking = new TicketBooking();
 
     // Manually add some bookings to the list
-    Ticket[] bookings = {
-        new Ticket("John", "Doe", 1990, TicketType.VIP),
-        new Ticket("Jane", "Smith", 1985, TicketType.STANDARD),
-        new Ticket("Mike", "Johnson", 1995, TicketType.STANDARD_PLUS)
+    EventTicket[] bookings = {
+        new EventTicket("John", "Doe", 1990, TicketType.VIP),
+        new EventTicket("Jane", "Smith", 1985, TicketType.STANDARD),
+        new EventTicket("Mike", "Johnson", 1995, TicketType.STANDARD_PLUS)
     };
     ticketBooking.getBookings().addAll(Arrays.asList(bookings));
 
@@ -105,13 +104,13 @@ public void testSaveBookings() {
     try {
         Path filePath = Path.of("Festivalbokaren/bookings.json");
         String json = Files.readString(filePath);
-        Ticket[] savedBookings = new ObjectMapper().readValue(json, Ticket[].class);
+        EventTicket[] savedBookings = new ObjectMapper().readValue(json, EventTicket[].class);
 
         // Assert that the saved bookings are equal to the manually added bookings
         assertEquals(bookings.length, savedBookings.length, "Saved bookings count is not correct");
         for (int i = 0; i < bookings.length; i++) {
-            Ticket expectedBooking = bookings[i];
-            Ticket savedBooking = savedBookings[i];
+            EventTicket expectedBooking = bookings[i];
+            EventTicket savedBooking = savedBookings[i];
             assertEquals(expectedBooking.getFirstName(), savedBooking.getFirstName(), "First name is not correct");
             assertEquals(expectedBooking.getLastName(), savedBooking.getLastName(), "Last name is not correct");
             assertEquals(expectedBooking.getYearOfBirth(), savedBooking.getYearOfBirth(), "Year of birth is not correct");

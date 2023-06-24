@@ -1,28 +1,30 @@
 package festivalbokaren;
 
-public class Ticket {
+public class EventTicket {
     private String firstName;
     private String lastName;
     private int yearOfBirth;
     private TicketType ticketType;
 
-    public Ticket() {
+    public EventTicket() {
         // Default constructor required for deserialization
     }
 
-    public Ticket(String firstName, String lastName, int yearOfBirth, TicketType ticketType) {
+    public EventTicket(String firstName, String lastName, int yearOfBirth, TicketType ticketType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.yearOfBirth = yearOfBirth;
         this.ticketType = ticketType;
     }
 
-
     public String getFirstName() {
         return firstName;
     }
 
     public void setFirstName(String firstName) {
+        if (firstName.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("First name cannot contain numbers.");
+        }
         this.firstName = firstName;
     }
 
@@ -31,6 +33,9 @@ public class Ticket {
     }
 
     public void setLastName(String lastName) {
+        if (lastName.isEmpty()) {
+            throw new IllegalArgumentException("Last name cannot be empty.");
+        }
         this.lastName = lastName;
     }
 
@@ -39,6 +44,9 @@ public class Ticket {
     }
 
     public void setYearOfBirth(int yearOfBirth) {
+        if (yearOfBirth < 1930 || yearOfBirth > 2023) {
+            throw new IllegalArgumentException("Year of birth must be between 1930 and 2023.");
+        }
         this.yearOfBirth = yearOfBirth;
     }
 

@@ -15,7 +15,7 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 
 public class TicketBooking {
-    private List<Ticket> bookings;
+    private List<EventTicket> bookings;
     private Map<TicketType, Integer> ticketCounts;
 
     public TicketBooking() {
@@ -24,7 +24,7 @@ public class TicketBooking {
         initializeTicketCounts();
     }
 
-    public List<Ticket> getBookings() {
+    public List<EventTicket> getBookings() {
         return bookings;
     }
 
@@ -151,7 +151,7 @@ public class TicketBooking {
         int availableTickets = ticketCounts.get(ticketType);
         if (availableTickets > 0) {
             ticketCounts.put(ticketType, availableTickets - 1);
-            Ticket booking = new Ticket(firstName, lastName, yearOfBirth, ticketType);
+            EventTicket booking = new EventTicket(firstName, lastName, yearOfBirth, ticketType);
             bookings.add(booking);
             System.out.println("Ticket booked successfully!");
         } else {
@@ -164,7 +164,7 @@ public class TicketBooking {
         if (bookings.isEmpty()) {
             System.out.println("No bookings found.");
         } else {
-            for (Ticket ticket : bookings) {
+            for (EventTicket ticket : bookings) {
                 System.out.println(ticket);
             }
         }
@@ -183,7 +183,7 @@ public class TicketBooking {
             String json = Files.readString(filePath);
     
             ObjectMapper objectMapper = new ObjectMapper();
-            Ticket[] loadedBookings = objectMapper.readValue(json, Ticket[].class);
+            EventTicket[] loadedBookings = objectMapper.readValue(json, EventTicket[].class);
             
             bookings.clear();
             bookings.addAll(Arrays.asList(loadedBookings));
