@@ -16,15 +16,27 @@ import java.util.Map;
 import java.util.Scanner;
 
 //comments here :
-public class TicketBooker {
+public class TicketBooking {
     private List<Ticket> bookings;
     private Map<TicketType, Integer> ticketCounts;
 
-    public TicketBooker() {
+    public TicketBooking() {
         this.bookings = new ArrayList<>();
         this.ticketCounts = new HashMap<>();
         initializeTicketCounts();
     }
+    //adding the getter methods, you can use them in your test class (TicketBookerTestSuite) 
+    //to access the bookings and ticketCounts fields of the TicketBooking class.
+
+    //1
+    public List<Ticket> getBookings() {
+        return bookings;
+    }
+    //2
+    public Map<TicketType, Integer> getTicketCounts() {
+        return ticketCounts;
+    }
+    //3
 
     private void initializeTicketCounts() {
         ticketCounts.put(TicketType.VIP, 1044);
@@ -34,7 +46,7 @@ public class TicketBooker {
     }
 
     public static void main(String[] args) {
-        TicketBooker ticketBooker = new TicketBooker();
+        TicketBooking ticketBooker = new TicketBooking();
         ticketBooker.run();
     }
 
@@ -81,7 +93,7 @@ public class TicketBooker {
         System.out.print("Enter your choice: ");
     }
 //comments here :
-    private void bookTicket() {
+     void bookTicket() {
         Scanner scanner = new Scanner(System.in);
     
         System.out.print("Enter first name: ");
@@ -102,6 +114,7 @@ public class TicketBooker {
         System.out.print("Enter ticket type: ");
         int ticketTypeChoice = scanner.nextInt();
         scanner.nextLine(); // Consume newline character
+        scanner.close();
     
         TicketType ticketType;
    //comments here : 
