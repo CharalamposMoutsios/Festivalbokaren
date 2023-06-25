@@ -34,7 +34,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-public class TicketBookerTestSuite {
+public class TicketBookerSuiteTest {
     @Test
     public void testPrintSummary() {
         // Create an instance of TicketBooking
