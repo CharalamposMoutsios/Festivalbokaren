@@ -113,7 +113,12 @@ public class TicketBooking {
         System.out.println("5. Exit");
         System.out.print("Enter your choice: ");
     }
-
+/* 
+ * Handle the booking of a ticket
+ * ask the user for their information and ticket detail
+ * check the ticket availability and add the booking to the list
+ * @param scaner the Scanner for user input
+*/
     void bookTicket(Scanner scanner) {
         System.out.print("Enter first name: ");
         String firstName = scanner.nextLine();
@@ -178,7 +183,9 @@ public class TicketBooking {
             System.out.println("No more tickets of type " + ticketType + " available.");
         }
     }
-
+/* 
+ * Prints a summary of the loaded bookings and ticket counts
+*/
     void printSummary() {
         System.out.println("Loaded bookings:");
         if (bookings.isEmpty()) {
@@ -196,7 +203,9 @@ public class TicketBooking {
             System.out.println(ticketType + ": " + count + " pcs");
         }
     }
-
+/*  
+* Load the booking from the Json file
+*/
     void loadBookings() {
         try {
             Path filePath = Path.of("Festivalbokaren/bookings.json");
@@ -214,7 +223,9 @@ public class TicketBooking {
         }
     }
     
-
+/* 
+ * Save the booking from the Json file
+*/
     void saveBookings() {
         try {
             Path filePath = Path.of("Festivalbokaren/bookings.json");
@@ -227,6 +238,7 @@ public class TicketBooking {
         }
     }
 
+    // method added for unitests
 	public void loadBookings(Path invalidFilePath) {
 	}
 }
