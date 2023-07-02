@@ -18,11 +18,21 @@ public class TicketBooking {
     private List<EventTicket> bookings;
     private Map<TicketType, Integer> ticketCounts;
 
+
+    //Constructs a new instance of TicketBooking
+    //Initializes the booking list and ticketCounts map.
+
     public TicketBooking() {
         this.bookings = new ArrayList<>();
         this.ticketCounts = new HashMap<>();
         initializeTicketCounts();
     }
+
+    //Returns the list of bookings
+    /*
+    * @return the booking list
+    */
+
 
     public List<EventTicket> getBookings() {
         return bookings;
