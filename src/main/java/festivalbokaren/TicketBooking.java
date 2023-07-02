@@ -41,19 +41,27 @@ public class TicketBooking {
     public Map<TicketType, Integer> getTicketCounts() {
         return ticketCounts;
     }
-
+/*
+ * Initializes the ticket counts for each ticket type.
+ */
     private void initializeTicketCounts() {
         ticketCounts.put(TicketType.VIP, 1044);
         ticketCounts.put(TicketType.STANDARD, 3449);
         ticketCounts.put(TicketType.STANDARD_PLUS, 1884);
         ticketCounts.put(TicketType.OFFICIAL, 100);
     }
-
+/* 
+ * Main entry point of the program
+ * Creates an instance of TicketBooking and call the run method.
+*/
     public static void main(String[] args) {
         TicketBooking ticketBooker = new TicketBooking();
         ticketBooker.run();
     }
-
+/* 
+ * Run the ticket booking program
+ * Display the menu and handle user input until the user choose to exit
+*/
     public void run() {
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
@@ -93,7 +101,9 @@ public class TicketBooking {
 
         scanner.close();
     }
-
+/* 
+ * Display the menu option for the user
+*/
     private void displayMenu() {
         System.out.println("----- Festival Booker -----");
         System.out.println("1. Book a ticket");
